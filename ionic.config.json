@@ -1,0 +1,7 @@
+{
+  "name": "mining-mpbile-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
