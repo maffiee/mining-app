@@ -1,0 +1,207 @@
+
+<ion-content>
+  <div class="min-h-full bg-[#F5F5F7] p-6">
+    <div class="mx-auto max-w-7xl">
+
+      <!-- HEADER -->
+      <div class="mb-6 flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-semibold tracking-tight text-[#1D1D1F]">
+            Customers
+          </h1>
+
+          <p class="mt-1 text-sm text-[#6E6E73]">
+            Manage customers who bring materials to the company.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          (click)="openCustomerForm()"
+          title="Add Customer"
+          aria-label="Add Customer"
+          class="flex h-10 w-10 items-center justify-center
+                 rounded-full bg-[#1D1D1F] text-white
+                 transition hover:bg-[#333336]"
+        >
+          <i class="bi bi-plus-lg text-sm"></i>
+        </button>
+      </div>
+
+      <!-- SEARCH -->
+      <div class="mb-5">
+        <div class="relative max-w-md">
+
+          <i
+            class="bi bi-search pointer-events-none absolute left-4
+                   top-1/2 -translate-y-1/2 text-[#6E6E73]"
+          ></i>
+
+          <input
+            type="search"
+            [(ngModel)]="searchTerm"
+            placeholder="Search customers..."
+            class="h-11 w-full rounded-xl border border-[#E5E5E7]
+                   bg-white pl-11 pr-4 text-sm text-[#1D1D1F]
+                   outline-none transition
+                   placeholder:text-[#6E6E73]
+                   focus:border-[#B89E65]
+                   focus:ring-4 focus:ring-[#B89E65]/10"
+          />
+
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div
+        class="overflow-hidden rounded-2xl
+               border border-[#E5E5E7] bg-white"
+      >
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+
+            <!-- TABLE HEADER -->
+            <thead class="border-b border-[#E5E5E7]">
+              <tr>
+
+                <th
+                  class="px-6 py-4 text-xs font-medium
+                         uppercase tracking-wide text-[#6E6E73]"
+                >
+                  Customer
+                </th>
+
+                <th
+                  class="px-6 py-4 text-xs font-medium
+                         uppercase tracking-wide text-[#6E6E73]"
+                >
+                  Phone
+                </th>
+
+                <th
+                  class="px-6 py-4 text-xs font-medium
+                         uppercase tracking-wide text-[#6E6E73]"
+                >
+                  Address
+                </th>
+
+                <th
+                  class="px-6 py-4 text-xs font-medium
+                         uppercase tracking-wide text-[#6E6E73]"
+                >
+                  Action
+                </th>
+
+              </tr>
+            </thead>
+
+            <!-- TABLE BODY -->
+            <tbody class="divide-y divide-[#E5E5E7]">
+
+              @for (
+                customer of filteredCustomers();
+                track customer.id
+              ) {
+
+                <tr class="transition hover:bg-[#F5F5F7]">
+
+                  <!-- CUSTOMER -->
+                  <td class="px-6 py-4">
+
+                    <div class="flex items-center gap-3">
+
+                      <div
+                        class="flex h-9 w-9 shrink-0 items-center
+                               justify-center rounded-full
+                               bg-[#F5F5F7] text-sm font-semibold
+                               text-[#1D1D1F]"
+                      >
+                        {{ customer.name.charAt(0).toUpperCase() }}
+                      </div>
+
+                      <span class="font-medium text-[#1D1D1F]">
+                        {{ customer.name }}
+                      </span>
+
+                    </div>
+
+                  </td>
+
+                  <!-- PHONE -->
+                  <td class="px-6 py-4 text-[#6E6E73]">
+                    {{ customer.phone }}
+                  </td>
+
+                  <!-- ADDRESS -->
+                  <td class="px-6 py-4 text-[#6E6E73]">
+                    {{ customer.address || 'N/A' }}
+                  </td>
+
+                  <!-- ACTION -->
+                  <td class="px-6 py-4">
+
+                    <button
+                      type="button"
+                      (click)="editCustomerForm(customer)"
+                      class="inline-flex items-center gap-1.5
+                             rounded-full px-3 py-1.5
+                             text-xs font-medium text-[#1D1D1F]
+                             transition hover:bg-[#F5F5F7]"
+                    >
+                      <i class="bi bi-pencil text-xs"></i>
+                      Edit
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              } @empty {
+
+                <tr>
+
+                  <td
+                    colspan="4"
+                    class="px-6 py-16 text-center"
+                  >
+
+                    <div class="flex flex-col items-center">
+
+                      <div
+                        class="flex h-12 w-12 items-center
+                               justify-center rounded-full
+                               bg-[#F5F5F7]"
+                      >
+                        <i class="bi bi-people text-xl text-[#6E6E73]"></i>
+                      </div>
+
+                      <p
+                        class="mt-4 text-sm font-medium
+                               text-[#1D1D1F]"
+                      >
+                        No customers found
+                      </p>
+
+                      <p class="mt-1 text-sm text-[#6E6E73]">
+                        Try adjusting your search.
+                      </p>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</ion-content>

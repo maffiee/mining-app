@@ -1,0 +1,430 @@
+<div class="w-full bg-white">
+
+  <!-- HEADER -->
+
+  <div class="flex items-start justify-between border-b border-[#E5E5E7] px-6 py-5">
+
+
+<div>
+  <h2 class="text-xl font-semibold tracking-tight text-[#1D1D1F]">
+    Customer Settlement
+  </h2>
+
+  <p class="mt-1 text-sm text-[#6E6E73]">
+    Calculate what is owed to the customer.
+  </p>
+</div>
+
+<button
+  type="button"
+  (click)="close()"
+  class="flex h-9 w-9 items-center justify-center rounded-full
+         bg-[#F5F5F7] text-[#6E6E73]
+         transition hover:bg-[#E5E5E7] hover:text-[#1D1D1F]"
+  aria-label="Close"
+>
+  <i class="bi bi-x-lg text-sm"></i>
+</button>
+
+
+  </div>
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="save()"
+    class="space-y-7 p-6"
+  >
+
+
+<!-- PROCESSING RECORD -->
+<div>
+
+  <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+    Processing Record
+  </label>
+
+  <select
+    formControlName="processingId"
+    (change)="selectProcessing($any($event.target).value)"
+    class="w-full rounded-xl border border-[#E5E5E7] bg-white
+           px-4 py-3 text-sm text-[#1D1D1F] outline-none
+           transition
+           focus:border-[#B89E65]
+           focus:ring-4 focus:ring-[#B89E65]/10"
+  >
+
+    <option value="" disabled>
+      Select completed processing
+    </option>
+
+    @for (
+      record of unsettledProcessingRecords();
+      track record.id
+    ) {
+
+      <option [value]="record.id">
+        {{ record.customerName }} - {{ record.date }}
+      </option>
+
+    }
+
+  </select>
+
+</div>
+
+
+@if (selectedProcessing(); as processing) {
+
+  <!-- CUSTOMER -->
+  <div class="rounded-2xl border border-[#E5E5E7] bg-[#F5F5F7] p-4">
+
+    <p class="text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+      Customer
+    </p>
+
+    <p class="mt-1 text-lg font-semibold tracking-tight text-[#1D1D1F]">
+      {{ processing.customerName }}
+    </p>
+
+  </div>
+
+
+  <!-- RECOVERED MINERALS -->
+  <div>
+
+    <div class="mb-4">
+      <h3 class="text-sm font-semibold text-[#1D1D1F]">
+        Recovered Minerals
+      </h3>
+
+      <p class="mt-1 text-xs text-[#6E6E73]">
+        Quantity recovered from this processing record.
+      </p>
+    </div>
+
+
+    <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+
+      <div class="rounded-2xl border border-[#E5E5E7] bg-white p-4">
+
+        <div class="flex items-center justify-between">
+
+          <p class="text-sm text-[#6E6E73]">
+            Monazite
+          </p>
+
+          <i class="bi bi-box-seam text-[#B89E65]"></i>
+
+        </div>
+
+        <p class="mt-2 text-xl font-semibold tracking-tight text-[#1D1D1F]">
+          {{ processing.monaziteQuantity }} kg
+        </p>
+
+      </div>
+
+
+      <div class="rounded-2xl border border-[#E5E5E7] bg-white p-4">
+
+        <div class="flex items-center justify-between">
+
+          <p class="text-sm text-[#6E6E73]">
+            Zircon
+          </p>
+
+          <i class="bi bi-box-seam text-[#B89E65]"></i>
+
+        </div>
+
+        <p class="mt-2 text-xl font-semibold tracking-tight text-[#1D1D1F]">
+          {{ processing.zirconQuantity }} kg
+        </p>
+
+      </div>
+
+
+      <div class="rounded-2xl border border-[#E5E5E7] bg-white p-4">
+
+        <div class="flex items-center justify-between">
+
+          <p class="text-sm text-[#6E6E73]">
+            Iron
+          </p>
+
+          <i class="bi bi-box-seam text-[#B89E65]"></i>
+
+        </div>
+
+        <p class="mt-2 text-xl font-semibold tracking-tight text-[#1D1D1F]">
+          {{ processing.ironQuantity }} kg
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- PRICES -->
+  <div>
+
+    <div class="mb-4">
+      <h3 class="text-sm font-semibold text-[#1D1D1F]">
+        Mineral Prices
+      </h3>
+
+      <p class="mt-1 text-xs text-[#6E6E73]">
+        Enter the price per kilogram for each recovered mineral.
+      </p>
+    </div>
+
+
+    <div class="space-y-4">
+
+      <!-- MONAZITE -->
+      <div>
+
+        <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+          Monazite Price / kg
+        </label>
+
+        <div class="relative">
+
+          <span class="pointer-events-none absolute left-4 top-1/2
+                       -translate-y-1/2 text-sm text-[#6E6E73]">
+            ₦
+          </span>
+
+          <input
+            type="number"
+            formControlName="monazitePricePerKg"
+            min="0"
+            (input)="onMonazitePriceChange($any($event.target).value)"
+            class="w-full rounded-xl border border-[#E5E5E7]
+                   bg-white py-3 pl-9 pr-4 text-sm text-[#1D1D1F]
+                   outline-none transition
+                   focus:border-[#B89E65]
+                   focus:ring-4 focus:ring-[#B89E65]/10"
+          />
+
+        </div>
+
+      </div>
+
+
+      <!-- ZIRCON -->
+      <div>
+
+        <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+          Zircon Price / kg
+        </label>
+
+        <div class="relative">
+
+          <span class="pointer-events-none absolute left-4 top-1/2
+                       -translate-y-1/2 text-sm text-[#6E6E73]">
+            ₦
+          </span>
+
+          <input
+            type="number"
+            formControlName="zirconPricePerKg"
+            min="0"
+            (input)="onZirconPriceChange($any($event.target).value)"
+            class="w-full rounded-xl border border-[#E5E5E7]
+                   bg-white py-3 pl-9 pr-4 text-sm text-[#1D1D1F]
+                   outline-none transition
+                   focus:border-[#B89E65]
+                   focus:ring-4 focus:ring-[#B89E65]/10"
+          />
+
+        </div>
+
+      </div>
+
+
+      <!-- IRON -->
+      <div>
+
+        <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+          Iron Price / kg
+        </label>
+
+        <div class="relative">
+
+          <span class="pointer-events-none absolute left-4 top-1/2
+                       -translate-y-1/2 text-sm text-[#6E6E73]">
+            ₦
+          </span>
+
+          <input
+            type="number"
+            formControlName="ironPricePerKg"
+            min="0"
+            (input)="onIronPriceChange($any($event.target).value)"
+            class="w-full rounded-xl border border-[#E5E5E7]
+                   bg-white py-3 pl-9 pr-4 text-sm text-[#1D1D1F]
+                   outline-none transition
+                   focus:border-[#B89E65]
+                   focus:ring-4 focus:ring-[#B89E65]/10"
+          />
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- CALCULATION -->
+  <div class="rounded-2xl border border-[#E5E5E7] bg-[#F5F5F7] p-5">
+
+    <div class="mb-4 flex items-center gap-2">
+
+      <div class="flex h-8 w-8 items-center justify-center rounded-full bg-white">
+        <i class="bi bi-calculator text-sm text-[#B89E65]"></i>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold text-[#1D1D1F]">
+          Settlement Summary
+        </h3>
+
+        <p class="text-xs text-[#6E6E73]">
+          Calculated from recovered quantity and entered prices.
+        </p>
+      </div>
+
+    </div>
+
+
+    <div class="space-y-3">
+
+      <div class="flex justify-between text-sm">
+
+        <span class="text-[#6E6E73]">
+          Monazite
+        </span>
+
+        <span class="font-medium text-[#1D1D1F]">
+          ₦{{ amounts().monazite | number }}
+        </span>
+
+      </div>
+
+
+      <div class="flex justify-between text-sm">
+
+        <span class="text-[#6E6E73]">
+          Zircon
+        </span>
+
+        <span class="font-medium text-[#1D1D1F]">
+          ₦{{ amounts().zircon | number }}
+        </span>
+
+      </div>
+
+
+      <div class="flex justify-between text-sm">
+
+        <span class="text-[#6E6E73]">
+          Iron
+        </span>
+
+        <span class="font-medium text-[#1D1D1F]">
+          ₦{{ amounts().iron | number }}
+        </span>
+
+      </div>
+
+
+      <div class="mt-4 flex items-end justify-between
+                  border-t border-[#E5E5E7] pt-4">
+
+        <div>
+
+          <p class="text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+            Total Settlement
+          </p>
+
+          <p class="mt-1 text-2xl font-semibold tracking-tight text-[#1D1D1F]">
+            ₦{{ amounts().total | number }}
+          </p>
+
+        </div>
+
+        <i class="bi bi-wallet2 text-xl text-[#B89E65]"></i>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
+
+
+<!-- ERROR -->
+@if (errorMessage) {
+
+  <div class="flex items-start gap-3 rounded-xl border border-red-100
+              bg-red-50 p-4 text-sm text-red-700">
+
+    <i class="bi bi-exclamation-circle-fill mt-0.5"></i>
+
+    <span>
+      {{ errorMessage }}
+    </span>
+
+  </div>
+
+}
+
+
+<!-- BUTTONS -->
+<div class="flex justify-end gap-3 border-t border-[#E5E5E7] pt-5">
+
+  <button
+    type="button"
+    (click)="close()"
+    class="rounded-full border border-[#E5E5E7] bg-white
+           px-5 py-2.5 text-sm font-medium text-[#1D1D1F]
+           transition hover:bg-[#F5F5F7]"
+  >
+    Cancel
+  </button>
+
+
+  <button
+    type="submit"
+    [disabled]="loading"
+    class="rounded-full bg-[#1D1D1F] px-5 py-2.5
+           text-sm font-medium text-white
+           transition hover:bg-[#333336]
+           disabled:cursor-not-allowed disabled:opacity-50"
+  >
+
+    @if (loading) {
+      <span class="flex items-center gap-2">
+        <i class="bi bi-arrow-repeat animate-spin"></i>
+        Saving...
+      </span>
+    } @else {
+      <span class="flex items-center gap-2">
+        <i class="bi bi-check2"></i>
+        Create Settlement
+      </span>
+    }
+
+  </button>
+
+</div>
+
+
+  </form>
+
+</div>

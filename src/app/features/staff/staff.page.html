@@ -1,0 +1,270 @@
+
+<ion-content>
+  <div class="min-h-full bg-[#F5F5F7] p-6">
+    <div class="mx-auto max-w-7xl">
+
+      <!-- HEADER -->
+      <div class="mb-6 flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-semibold tracking-tight text-[#1D1D1F]">
+            Staff Profiling
+          </h1>
+          <p class="mt-1 text-sm text-[#6E6E73]">
+            Manage monthly staff, salaries, and payments.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3">
+
+          <!-- PAY ALL -->
+          <button
+            type="button"
+            (click)="payAllForCurrentMonth()"
+            [disabled]="bulkPaying() || unpaidThisMonth().length === 0"
+            class="flex items-center gap-2 rounded-full px-5 py-2.5
+                   text-sm font-medium transition"
+            [class.bg-[#1D1D1F]]="unpaidThisMonth().length > 0"
+            [class.text-white]="unpaidThisMonth().length > 0"
+            [class.hover:bg-[#333336]]="unpaidThisMonth().length > 0"
+            [class.bg-[#E5E5E7]]="unpaidThisMonth().length === 0"
+            [class.text-[#6E6E73]]="unpaidThisMonth().length === 0"
+          >
+            @if (bulkPaying()) {
+              <i class="bi bi-arrow-repeat animate-spin"></i>
+              Paying...
+            } @else if (unpaidThisMonth().length === 0) {
+              <i class="bi bi-check-circle-fill"></i>
+              All Paid for {{ currentMonth }}
+            } @else {
+              <i class="bi bi-cash-stack"></i>
+              Pay All ({{ unpaidThisMonth().length }})
+            }
+          </button>
+
+          <!-- ADD STAFF -->
+          <button
+            type="button"
+            (click)="openAdd()"
+            class="flex h-10 w-10 items-center justify-center
+                   rounded-full bg-[#1D1D1F] text-white
+                   transition hover:bg-[#333336]"
+            aria-label="Add Staff"
+          >
+            <i class="bi bi-plus-lg text-sm"></i>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- SUMMARY -->
+      <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+
+        <!-- ACTIVE STAFF -->
+        <div class="rounded-2xl border border-[#E5E5E7] bg-white p-5">
+          <p class="text-sm text-[#6E6E73]">
+            Active Staff
+          </p>
+
+          <p class="mt-2 text-2xl font-semibold tracking-tight text-[#1D1D1F]">
+            {{ staffList().length }}
+          </p>
+        </div>
+
+        <!-- MONTHLY WAGE -->
+        <div class="rounded-2xl border border-[#E5E5E7] bg-white p-5">
+          <p class="text-sm text-[#6E6E73]">
+            Monthly Wage Bill
+          </p>
+
+          <p class="mt-2 text-2xl font-semibold tracking-tight text-[#1D1D1F]">
+            ₦{{ totalMonthlyWage() | number }}
+          </p>
+        </div>
+
+        <!-- SEARCH -->
+        <div class="rounded-2xl border border-[#E5E5E7] bg-white p-5">
+          <p class="text-sm text-[#6E6E73]">
+            Search Staff
+          </p>
+
+          <div class="relative mt-2">
+            <i
+              class="bi bi-search pointer-events-none absolute left-3
+                     top-1/2 -translate-y-1/2 text-[#6E6E73]"
+            ></i>
+
+            <input
+              type="search"
+              [ngModel]="searchTerm()"
+              (ngModelChange)="searchTerm.set($event)"
+              placeholder="Search staff..."
+              class="h-10 w-full rounded-xl border border-[#E5E5E7]
+                     bg-white pl-9 pr-3 text-sm text-[#1D1D1F]
+                     outline-none transition
+                     placeholder:text-[#6E6E73]
+                     focus:border-[#B89E65]
+                     focus:ring-4 focus:ring-[#B89E65]/10"
+            />
+          </div>
+        </div>
+
+      </div>
+
+      <!-- STAFF TABLE -->
+      <div class="overflow-hidden rounded-2xl border border-[#E5E5E7] bg-white">
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+
+            <thead class="border-b border-[#E5E5E7]">
+              <tr>
+                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+                  Name
+                </th>
+
+                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+                  Role
+                </th>
+
+                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+                  Salary
+                </th>
+
+                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+                  Status
+                </th>
+
+                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+                  Action
+                </th>
+              </tr>
+            </thead>
+
+            <tbody class="divide-y divide-[#E5E5E7]">
+
+              @for (s of filtered(); track s.id) {
+
+                <tr class="transition hover:bg-[#F5F5F7]">
+
+                  <!-- NAME -->
+                  <td class="px-6 py-4">
+                    <p class="font-medium text-[#1D1D1F]">
+                      {{ s.fullName }}
+                    </p>
+
+                    <p class="mt-1 text-xs text-[#6E6E73]">
+                      {{ s.phone }}
+                    </p>
+                  </td>
+
+                  <!-- ROLE -->
+                  <td class="px-6 py-4">
+                    <span class="capitalize text-[#6E6E73]">
+                      {{ s.role }}
+                    </span>
+                  </td>
+
+                  <!-- SALARY -->
+                  <td class="px-6 py-4">
+                    <p class="font-semibold text-[#1D1D1F]">
+                      ₦{{ s.salaryAmount | number }}
+                    </p>
+
+                    <p class="mt-1 text-xs text-[#6E6E73]">
+                      Monthly
+                    </p>
+                  </td>
+
+                  <!-- STATUS -->
+                  <td class="px-6 py-4">
+                    @if (s.status === 'active') {
+                      <span
+                        class="inline-flex items-center gap-1.5 rounded-full
+                               bg-green-50 px-3 py-1 text-xs font-medium text-green-700"
+                      >
+                        <i class="bi bi-check-circle-fill text-[10px]"></i>
+                        Active
+                      </span>
+                    } @else {
+                      <span
+                        class="inline-flex items-center gap-1.5 rounded-full
+                               bg-[#F5F5F7] px-3 py-1 text-xs font-medium text-[#6E6E73]"
+                      >
+                        <i class="bi bi-dash-circle-fill text-[10px]"></i>
+                        {{ s.status }}
+                      </span>
+                    }
+                  </td>
+
+                  <!-- ACTION -->
+                  <td class="px-6 py-4">
+
+                    @if (isPaid(s.id)) {
+
+                      <span
+                        class="inline-flex items-center gap-1.5 rounded-full
+                               bg-green-50 px-3 py-1 text-xs font-medium text-green-700"
+                      >
+                        <i class="bi bi-check-circle-fill text-[10px]"></i>
+                        Paid {{ currentMonth }}
+                      </span>
+
+                    } @else {
+
+                      <button
+                        type="button"
+                        (click)="openPay(s)"
+                        class="rounded-full bg-[#1D1D1F] px-4 py-2
+                               text-xs font-medium text-white
+                               transition hover:bg-[#333336]"
+                      >
+                        Pay Salary
+                      </button>
+
+                    }
+
+                  </td>
+
+                </tr>
+
+              }
+
+              @empty {
+
+                <tr>
+                  <td colspan="5" class="px-6 py-16 text-center">
+
+                    <div class="flex flex-col items-center">
+
+                      <div
+                        class="flex h-12 w-12 items-center justify-center
+                               rounded-full bg-[#F5F5F7]"
+                      >
+                        <i class="bi bi-people text-xl text-[#6E6E73]"></i>
+                      </div>
+
+                      <p class="mt-4 text-sm font-medium text-[#1D1D1F]">
+                        No staff found
+                      </p>
+
+                      <p class="mt-1 text-sm text-[#6E6E73]">
+                        Add your manager, processor, and security staff.
+                      </p>
+
+                    </div>
+
+                  </td>
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</ion-content>

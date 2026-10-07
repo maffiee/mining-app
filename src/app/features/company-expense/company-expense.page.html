@@ -1,0 +1,201 @@
+
+<ion-content>
+
+  <div class="min-h-full bg-[#F5F5F7] p-6">
+    <div class="mx-auto max-w-7xl">
+
+      <!-- HEADER -->
+      <div class="mb-6 flex items-center justify-between">
+
+        <div>
+          <h1 class="text-2xl font-semibold tracking-tight text-[#1D1D1F]">
+            Company Expenses
+          </h1>
+
+          <p class="mt-1 text-sm text-[#6E6E73]">
+            Auto-generated from transport and customer payments, plus manual expenses.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          (click)="openAddExpense()"
+          class="flex h-10 w-10 items-center justify-center
+                 rounded-full bg-[#1D1D1F] text-white
+                 transition hover:bg-[#333336]"
+          aria-label="Add Expense"
+        >
+          <i class="bi bi-plus-lg text-sm"></i>
+        </button>
+
+      </div>
+
+      <!-- SUMMARY CARDS -->
+      <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+
+        <!-- TOTAL EXPENSES -->
+        <div class="rounded-2xl border border-[#E5E5E7] bg-white p-5">
+
+          <p class="text-sm text-[#6E6E73]">
+            Total Expenses
+          </p>
+
+          <p class="mt-2 text-2xl font-semibold tracking-tight text-red-700">
+            ₦{{ total() | number }}
+          </p>
+
+        </div>
+
+        <!-- RECORDS -->
+        <div class="rounded-2xl border border-[#E5E5E7] bg-white p-5">
+
+          <p class="text-sm text-[#6E6E73]">
+            Records
+          </p>
+
+          <p class="mt-2 text-2xl font-semibold tracking-tight text-[#1D1D1F]">
+            {{ expenses().length }}
+          </p>
+
+        </div>
+
+      </div>
+
+      <!-- SEARCH -->
+      <div class="mb-5">
+
+        <div class="relative max-w-md">
+
+          <i
+            class="bi bi-search pointer-events-none absolute left-4 top-1/2
+                   -translate-y-1/2 text-[#6E6E73]"
+          ></i>
+
+          <input
+            type="search"
+            [ngModel]="searchTerm()"
+            (ngModelChange)="searchTerm.set($event)"
+            placeholder="Search expense..."
+            class="h-11 w-full rounded-xl border border-[#E5E5E7]
+                   bg-white pl-11 pr-4 text-sm text-[#1D1D1F]
+                   outline-none transition
+                   placeholder:text-[#6E6E73]
+                   focus:border-[#B89E65]
+                   focus:ring-4 focus:ring-[#B89E65]/10"
+          />
+
+        </div>
+
+      </div>
+
+      <!-- TABLE -->
+      <div class="overflow-hidden rounded-2xl border border-[#E5E5E7] bg-white">
+
+        <div class="overflow-x-auto">
+
+          <table class="w-full text-left text-sm">
+
+            <thead class="border-b border-[#E5E5E7]">
+              <tr>
+
+                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+                  Category
+                </th>
+
+                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+                  Description
+                </th>
+
+                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+                  Amount
+                </th>
+
+                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+                  Date
+                </th>
+
+              </tr>
+            </thead>
+
+            <tbody class="divide-y divide-[#E5E5E7]">
+
+              @for (e of filtered(); track e.id) {
+
+                <tr class="transition hover:bg-[#F5F5F7]">
+
+                  <td class="px-6 py-4 capitalize">
+
+                    <span
+                      class="inline-flex rounded-full px-3 py-1
+                             text-xs font-medium"
+                      [class.bg-[#F5F5F7]]="e.category !== 'transport' && e.category !== 'customer_payment'"
+                      [class.text-[#1D1D1F]]="e.category !== 'transport' && e.category !== 'customer_payment'"
+                      [class.bg-amber-50]="e.category === 'transport'"
+                      [class.text-amber-700]="e.category === 'transport'"
+                      [class.bg-blue-50]="e.category === 'customer_payment'"
+                      [class.text-blue-700]="e.category === 'customer_payment'"
+                    >
+                      {{ e.category.replace('_', ' ') }}
+                    </span>
+
+                  </td>
+
+                  <td class="px-6 py-4 text-[#6E6E73]">
+                    {{ e.description }}
+                  </td>
+
+                  <td class="px-6 py-4 font-semibold text-red-700">
+                    ₦{{ e.amount | number }}
+                  </td>
+
+                  <td class="px-6 py-4 text-[#6E6E73]">
+                    {{ e.expenseDate | date:'mediumDate' }}
+                  </td>
+
+                </tr>
+
+              }
+
+              @empty {
+
+                <tr>
+
+                  <td colspan="4" class="px-6 py-16 text-center">
+
+                    <div class="flex flex-col items-center">
+
+                      <div
+                        class="flex h-12 w-12 items-center justify-center
+                               rounded-full bg-[#F5F5F7]"
+                      >
+                        <i class="bi bi-receipt text-xl text-[#6E6E73]"></i>
+                      </div>
+
+                      <p class="mt-4 text-sm font-medium text-[#1D1D1F]">
+                        No expenses found
+                      </p>
+
+                      <p class="mt-1 text-sm text-[#6E6E73]">
+                        Expenses will appear here once recorded.
+                      </p>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</ion-content>

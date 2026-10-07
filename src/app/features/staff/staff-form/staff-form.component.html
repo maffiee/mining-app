@@ -1,0 +1,220 @@
+
+<div class="w-full bg-white">
+
+  <!-- HEADER -->
+  <div class="flex items-start justify-between border-b border-[#E5E5E7] px-6 py-5">
+
+    <div>
+      <h2 class="text-xl font-semibold tracking-tight text-[#1D1D1F]">
+        Add Staff Profile
+      </h2>
+
+      <p class="mt-1 text-sm text-[#6E6E73]">
+        Add a staff member for the tin-shed.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      (click)="close()"
+      class="flex h-9 w-9 items-center justify-center rounded-full
+             bg-[#F5F5F7] text-[#6E6E73]
+             transition hover:bg-[#E5E5E7] hover:text-[#1D1D1F]"
+      aria-label="Close"
+    >
+      <i class="bi bi-x-lg text-sm"></i>
+    </button>
+
+  </div>
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="save()"
+    class="space-y-7 p-6"
+  >
+
+    <!-- PERSONAL INFORMATION -->
+    <div>
+
+      <div class="mb-4">
+        <h3 class="text-sm font-semibold text-[#1D1D1F]">
+          Personal Information
+        </h3>
+
+        <p class="mt-1 text-xs text-[#6E6E73]">
+          Enter the staff member's basic details.
+        </p>
+      </div>
+
+      <div class="space-y-4">
+
+        <!-- FULL NAME -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+            Full Name <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            type="text"
+            formControlName="fullName"
+            placeholder="John Musa"
+            class="w-full rounded-xl border border-[#E5E5E7]
+                   bg-white px-4 py-3 text-sm text-[#1D1D1F]
+                   outline-none transition
+                   placeholder:text-[#6E6E73]
+                   focus:border-[#B89E65]
+                   focus:ring-4 focus:ring-[#B89E65]/10"
+          />
+        </div>
+
+        <!-- ROLE + PHONE -->
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+
+          <div>
+            <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+              Role <span class="text-red-500">*</span>
+            </label>
+
+            <select
+              formControlName="role"
+              class="w-full rounded-xl border border-[#E5E5E7]
+                     bg-white px-4 py-3 text-sm text-[#1D1D1F]
+                     outline-none transition
+                     focus:border-[#B89E65]
+                     focus:ring-4 focus:ring-[#B89E65]/10"
+            >
+              <option value="manager">Manager</option>
+              <option value="processor">Processor / Grinder</option>
+              <option value="security">Security</option>
+              <option value="driver">Driver</option>
+              <option value="accountant">Accountant / Clerk</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+              Phone
+            </label>
+
+            <input
+              type="tel"
+              formControlName="phone"
+              placeholder="0803..."
+              class="w-full rounded-xl border border-[#E5E5E7]
+                     bg-white px-4 py-3 text-sm text-[#1D1D1F]
+                     outline-none transition
+                     placeholder:text-[#6E6E73]
+                     focus:border-[#B89E65]
+                     focus:ring-4 focus:ring-[#B89E65]/10"
+            />
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- EMPLOYMENT DETAILS -->
+    <div>
+
+      <div class="mb-4">
+        <h3 class="text-sm font-semibold text-[#1D1D1F]">
+          Employment Details
+        </h3>
+
+        <p class="mt-1 text-xs text-[#6E6E73]">
+          Set the staff member's salary and employment date.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+
+        <!-- SALARY -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+            Monthly Salary <span class="text-red-500">*</span>
+          </label>
+
+          <div class="relative">
+            <span
+              class="pointer-events-none absolute left-4 top-1/2
+                     -translate-y-1/2 text-sm text-[#6E6E73]"
+            >
+              ₦
+            </span>
+
+            <input
+              type="number"
+              formControlName="salaryAmount"
+              placeholder="80000"
+              class="w-full rounded-xl border border-[#E5E5E7]
+                     bg-white py-3 pl-9 pr-4 text-sm text-[#1D1D1F]
+                     outline-none transition
+                     placeholder:text-[#6E6E73]
+                     focus:border-[#B89E65]
+                     focus:ring-4 focus:ring-[#B89E65]/10"
+            />
+          </div>
+        </div>
+
+        <!-- EMPLOYMENT DATE -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+            Employment Date
+          </label>
+
+          <input
+            type="date"
+            formControlName="employmentDate"
+            class="w-full rounded-xl border border-[#E5E5E7]
+                   bg-white px-4 py-3 text-sm text-[#1D1D1F]
+                   outline-none transition
+                   focus:border-[#B89E65]
+                   focus:ring-4 focus:ring-[#B89E65]/10"
+          />
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="flex justify-end gap-3 border-t border-[#E5E5E7] pt-5">
+
+      <button
+        type="button"
+        (click)="close()"
+        class="rounded-full border border-[#E5E5E7] bg-white
+               px-5 py-2.5 text-sm font-medium text-[#1D1D1F]
+               transition hover:bg-[#F5F5F7]"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="submit"
+        [disabled]="loading"
+        class="rounded-full bg-[#1D1D1F] px-5 py-2.5
+               text-sm font-medium text-white
+               transition hover:bg-[#333336]
+               disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        <span class="flex items-center gap-2">
+
+          @if (loading) {
+            <i class="bi bi-arrow-repeat animate-spin"></i>
+            Saving...
+          } @else {
+            <i class="bi bi-check2"></i>
+            Save Staff
+          }
+
+        </span>
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

@@ -1,0 +1,27 @@
+<ion-split-pane
+  contentId="main-content"
+  when="md"
+  class="bg-slate-50 [--side-width:16rem] [--side-min-width:16rem] [--side-max-width:16rem]"
+>
+  <ion-menu
+    menuId="main-navigation"
+    contentId="main-content"
+    type="overlay"
+    
+    style="--background: #0f172a;"
+  >
+    <app-sidebar class="block h-full w-full"></app-sidebar>
+  </ion-menu>
+
+  <div id="main-content" class="flex min-w-0 flex-1 flex-col">
+
+    <app-topbar></app-topbar>
+
+    <main class="relative min-h-0 flex-1 overflow-hidden">
+      <router-outlet></router-outlet>
+      <!-- <ion-router-outlet></ion-router-outlet> -->
+    </main>
+
+  </div>
+
+</ion-split-pane>

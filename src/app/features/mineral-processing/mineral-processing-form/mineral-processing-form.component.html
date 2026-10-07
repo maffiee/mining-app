@@ -1,0 +1,315 @@
+<div class="w-full bg-white">
+
+  <!-- HEADER -->
+
+  <div class="flex items-center justify-between border-b border-[#E5E5E7] px-6 py-5">
+
+
+<div>
+
+  <h2 class="text-xl font-semibold tracking-tight text-[#1D1D1F]">
+    Mineral Processing
+  </h2>
+
+  <p class="mt-1 text-sm text-[#6E6E73]">
+    Record minerals recovered during processing.
+  </p>
+
+</div>
+
+<button
+  type="button"
+  (click)="close()"
+  class="flex h-9 w-9 items-center justify-center rounded-full
+         text-[#6E6E73] transition
+         hover:bg-[#F5F5F7] hover:text-[#1D1D1F]"
+  aria-label="Close"
+>
+  <i class="bi bi-x-lg text-sm"></i>
+</button>
+
+
+  </div>
+
+  <!-- FORM -->
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="save()"
+    class="space-y-6 p-6"
+  >
+
+
+<!-- CUSTOMER -->
+
+<div>
+
+  <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+    Customer
+  </label>
+
+  <select
+    formControlName="customerId"
+    (change)="onCustomerChange($any($event.target).value)"
+    class="w-full rounded-xl border border-[#E5E5E7] bg-white
+           px-4 py-3 text-sm text-[#1D1D1F] outline-none
+           focus:border-[#B89E65]
+           focus:ring-2 focus:ring-[#B89E65]/10"
+  >
+
+    <option value="" disabled>
+      Select customer
+    </option>
+
+    @for (customer of pendingCustomers(); track customer.id) {
+
+      <option [value]="customer.id">
+        {{ customer.name }}
+      </option>
+
+    }
+
+  </select>
+
+  @if (
+    form.controls.customerId.touched &&
+    form.controls.customerId.invalid
+  ) {
+
+    <p class="mt-1.5 text-xs text-red-600">
+      Please select a customer.
+    </p>
+
+  }
+
+</div>
+
+
+<!-- MATERIAL PROCESSED -->
+
+<div class="border-t border-[#E5E5E7] pt-6">
+
+  <h3 class="mb-4 text-sm font-semibold text-[#1D1D1F]">
+    Material Processed
+  </h3>
+
+
+  <div class="grid grid-cols-2 gap-4">
+
+    <!-- MATERIAL -->
+
+    <div>
+
+      <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+        Material
+      </label>
+
+      <input
+        type="text"
+        formControlName="inputMaterial"
+        readonly
+        class="w-full rounded-xl border border-[#E5E5E7]
+               bg-[#F5F5F7] px-4 py-3 text-sm
+               text-[#6E6E73] outline-none"
+      />
+
+    </div>
+
+
+    <!-- QUANTITY -->
+
+    <div>
+
+      <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+        Quantity
+      </label>
+
+      <input
+        type="number"
+        formControlName="inputQuantity"
+        readonly
+        class="w-full rounded-xl border border-[#E5E5E7]
+               bg-[#F5F5F7] px-4 py-3 text-sm
+               text-[#6E6E73] outline-none"
+      />
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- RECOVERED MINERALS -->
+
+<div class="border-t border-[#E5E5E7] pt-6">
+
+  <h3 class="mb-4 text-sm font-semibold text-[#1D1D1F]">
+    Minerals Recovered
+  </h3>
+
+
+  <div class="grid grid-cols-3 gap-4">
+
+    <!-- MONAZITE -->
+
+    <div>
+
+      <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+        Monazite
+        <span class="font-normal text-[#6E6E73]">(kg)</span>
+      </label>
+
+      <input
+        type="number"
+        formControlName="monaziteQuantity"
+        min="0"
+        class="w-full rounded-xl border border-[#E5E5E7]
+               bg-white px-4 py-3 text-sm text-[#1D1D1F]
+               outline-none
+               focus:border-[#B89E65]
+               focus:ring-2 focus:ring-[#B89E65]/10"
+      />
+
+    </div>
+
+
+    <!-- ZIRCON -->
+
+    <div>
+
+      <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+        Zircon
+        <span class="font-normal text-[#6E6E73]">(kg)</span>
+      </label>
+
+      <input
+        type="number"
+        formControlName="zirconQuantity"
+        min="0"
+        class="w-full rounded-xl border border-[#E5E5E7]
+               bg-white px-4 py-3 text-sm text-[#1D1D1F]
+               outline-none
+               focus:border-[#B89E65]
+               focus:ring-2 focus:ring-[#B89E65]/10"
+      />
+
+    </div>
+
+
+    <!-- IRON -->
+
+    <div>
+
+      <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+        Iron
+        <span class="font-normal text-[#6E6E73]">(kg)</span>
+      </label>
+
+      <input
+        type="number"
+        formControlName="ironQuantity"
+        min="0"
+        class="w-full rounded-xl border border-[#E5E5E7]
+               bg-white px-4 py-3 text-sm text-[#1D1D1F]
+               outline-none
+               focus:border-[#B89E65]
+               focus:ring-2 focus:ring-[#B89E65]/10"
+      />
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- DATE -->
+
+<div>
+
+  <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+    Processing Date
+  </label>
+
+  <input
+    type="date"
+    formControlName="date"
+    class="w-full rounded-xl border border-[#E5E5E7]
+           bg-white px-4 py-3 text-sm text-[#1D1D1F]
+           outline-none
+           focus:border-[#B89E65]
+           focus:ring-2 focus:ring-[#B89E65]/10"
+  />
+
+</div>
+
+
+<!-- NOTES -->
+
+<div>
+
+  <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+    Notes
+  </label>
+
+  <textarea
+    formControlName="notes"
+    rows="3"
+    placeholder="Optional notes..."
+    class="w-full resize-none rounded-xl border border-[#E5E5E7]
+           bg-white px-4 py-3 text-sm text-[#1D1D1F]
+           outline-none placeholder:text-[#6E6E73]
+           focus:border-[#B89E65]
+           focus:ring-2 focus:ring-[#B89E65]/10"
+  ></textarea>
+
+</div>
+
+
+<!-- ERROR -->
+
+@if (errorMessage) {
+
+  <div
+    class="rounded-xl bg-red-50 px-4 py-3
+           text-sm text-red-700"
+  >
+    {{ errorMessage }}
+  </div>
+
+}
+
+
+<!-- ACTIONS -->
+
+<div class="flex justify-end gap-3 border-t border-[#E5E5E7] pt-5">
+
+  <button
+    type="button"
+    (click)="close()"
+    class="rounded-full border border-[#E5E5E7]
+           bg-white px-5 py-2.5 text-sm font-medium
+           text-[#1D1D1F] transition
+           hover:bg-[#F5F5F7]"
+  >
+    Cancel
+  </button>
+
+  <button
+    type="submit"
+    [disabled]="loading"
+    class="rounded-full bg-[#1D1D1F] px-5 py-2.5
+           text-sm font-medium text-white transition
+           hover:bg-[#333336] disabled:cursor-not-allowed
+           disabled:opacity-50"
+  >
+    {{ loading ? 'Saving...' : 'Save Processing' }}
+  </button>
+
+</div>
+
+
+  </form>
+
+</div>

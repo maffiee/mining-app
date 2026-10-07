@@ -1,0 +1,395 @@
+
+<div class="w-full bg-white">
+
+  <!-- HEADER -->
+  <div class="flex items-start justify-between border-b border-[#E5E5E7] px-6 py-5">
+
+    <div>
+      <h2 class="text-xl font-semibold tracking-tight text-[#1D1D1F]">
+        New Mineral Sale
+      </h2>
+
+      <p class="mt-1 text-sm text-[#6E6E73]">
+        Deliver recovered minerals to a buyer and record the sale.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      (click)="close()"
+      class="flex h-9 w-9 items-center justify-center rounded-full
+             bg-[#F5F5F7] text-[#6E6E73]
+             transition hover:bg-[#E5E5E7] hover:text-[#1D1D1F]"
+      aria-label="Close"
+    >
+      <i class="bi bi-x-lg text-sm"></i>
+    </button>
+
+  </div>
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="save()"
+    class="space-y-7 p-6"
+  >
+
+    <!-- AVAILABLE STOCK -->
+    <div class="rounded-2xl border border-[#E5E5E7] bg-[#F5F5F7] p-5">
+
+      <div class="flex items-center justify-between">
+
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+            Available Stock
+          </p>
+
+          <p class="mt-1 text-lg font-semibold tracking-tight text-[#1D1D1F]">
+            {{ availableStock() }} kg
+          </p>
+        </div>
+
+        <div
+          class="flex h-10 w-10 items-center justify-center
+                 rounded-full bg-white"
+        >
+          <i class="bi bi-box-seam text-[#6E6E73]"></i>
+        </div>
+
+      </div>
+
+      <p class="mt-2 text-sm capitalize text-[#6E6E73]">
+        {{ form.get('mineralType')?.value }}
+      </p>
+
+    </div>
+
+    <!-- BUYER DETAILS -->
+    <div>
+
+      <div class="mb-4">
+        <h3 class="text-sm font-semibold text-[#1D1D1F]">
+          Buyer Details
+        </h3>
+
+        <p class="mt-1 text-xs text-[#6E6E73]">
+          Enter the buyer and delivery information.
+        </p>
+      </div>
+
+      <div class="space-y-4">
+
+        <!-- BUYER NAME -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+            Buyer Name
+          </label>
+
+          <input
+            type="text"
+            formControlName="buyerName"
+            placeholder="Chinese Buyer Name e.g. Mr. Li"
+            class="w-full rounded-xl border border-[#E5E5E7]
+                   bg-white px-4 py-3 text-sm text-[#1D1D1F]
+                   outline-none transition
+                   placeholder:text-[#6E6E73]
+                   focus:border-[#B89E65]
+                   focus:ring-4 focus:ring-[#B89E65]/10"
+          />
+        </div>
+
+        <!-- LOCATION -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+            Delivery Location
+          </label>
+
+          <input
+            type="text"
+            formControlName="buyerLocation"
+            placeholder="Delivery Location e.g. Rayfield Jos"
+            class="w-full rounded-xl border border-[#E5E5E7]
+                   bg-white px-4 py-3 text-sm text-[#1D1D1F]
+                   outline-none transition
+                   placeholder:text-[#6E6E73]
+                   focus:border-[#B89E65]
+                   focus:ring-4 focus:ring-[#B89E65]/10"
+          />
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- SALE DETAILS -->
+    <div>
+
+      <div class="mb-4">
+        <h3 class="text-sm font-semibold text-[#1D1D1F]">
+          Sale Details
+        </h3>
+
+        <p class="mt-1 text-xs text-[#6E6E73]">
+          Select the mineral and enter the quantity and selling price.
+        </p>
+      </div>
+
+      <div class="space-y-4">
+
+        <!-- MINERAL -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+            Mineral
+          </label>
+
+          <select
+            formControlName="mineralType"
+            class="w-full rounded-xl border border-[#E5E5E7]
+                   bg-white px-4 py-3 text-sm text-[#1D1D1F]
+                   outline-none transition
+                   focus:border-[#B89E65]
+                   focus:ring-4 focus:ring-[#B89E65]/10"
+          >
+            <option value="monazite">Monazite</option>
+            <option value="zircon">Zircon</option>
+            <option value="iron">Iron</option>
+          </select>
+        </div>
+
+        <!-- QUANTITY + PRICE -->
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+
+          <div>
+            <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+              Quantity (kg)
+            </label>
+
+            <input
+              type="number"
+              formControlName="quantity"
+              placeholder="Quantity"
+              class="w-full rounded-xl border border-[#E5E5E7]
+                     bg-white px-4 py-3 text-sm text-[#1D1D1F]
+                     outline-none transition
+                     placeholder:text-[#6E6E73]
+                     focus:border-[#B89E65]
+                     focus:ring-4 focus:ring-[#B89E65]/10"
+            />
+          </div>
+
+          <div>
+            <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+              Unit Price
+            </label>
+
+            <div class="relative">
+              <span
+                class="pointer-events-none absolute left-4 top-1/2
+                       -translate-y-1/2 text-sm text-[#6E6E73]"
+              >
+                ₦
+              </span>
+
+              <input
+                type="number"
+                formControlName="unitPrice"
+                placeholder="Unit price"
+                class="w-full rounded-xl border border-[#E5E5E7]
+                       bg-white py-3 pl-9 pr-4 text-sm text-[#1D1D1F]
+                       outline-none transition
+                       placeholder:text-[#6E6E73]
+                       focus:border-[#B89E65]
+                       focus:ring-4 focus:ring-[#B89E65]/10"
+              />
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TRANSPORT -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+            Transportation Cost
+          </label>
+
+          <div class="relative">
+            <span
+              class="pointer-events-none absolute left-4 top-1/2
+                     -translate-y-1/2 text-sm text-[#6E6E73]"
+            >
+              ₦
+            </span>
+
+            <input
+              type="number"
+              formControlName="transportationCost"
+              placeholder="Truck + fuel"
+              class="w-full rounded-xl border border-[#E5E5E7]
+                     bg-white py-3 pl-9 pr-4 text-sm text-[#1D1D1F]
+                     outline-none transition
+                     placeholder:text-[#6E6E73]
+                     focus:border-[#B89E65]
+                     focus:ring-4 focus:ring-[#B89E65]/10"
+            />
+          </div>
+
+          <p class="mt-2 text-xs text-[#6E6E73]">
+            Include truck, fuel, and other delivery transportation costs.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- SALE SUMMARY -->
+    <div class="rounded-2xl border border-[#E5E5E7] bg-[#F5F5F7] p-5">
+
+      <div class="mb-4">
+        <p class="text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+          Sale Summary
+        </p>
+      </div>
+
+      <div class="space-y-3">
+
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-[#6E6E73]">
+            Gross Sales
+          </span>
+
+          <span class="font-medium text-[#1D1D1F]">
+            ₦{{ totalAmount() | number }}
+          </span>
+        </div>
+
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-[#6E6E73]">
+            Transportation
+          </span>
+
+          <span class="font-medium text-[#9A7A3A]">
+            - ₦{{ form.get('transportationCost')?.value | number }}
+          </span>
+        </div>
+
+        <div
+          class="flex items-center justify-between
+                 border-t border-[#E5E5E7] pt-3"
+        >
+          <span class="font-medium text-[#1D1D1F]">
+            Net Sale
+          </span>
+
+          <span class="text-xl font-semibold tracking-tight text-[#1D1D1F]">
+            ₦{{ netAmount() | number }}
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ADDITIONAL DETAILS -->
+    <div>
+
+      <div class="mb-4">
+        <h3 class="text-sm font-semibold text-[#1D1D1F]">
+          Additional Details
+        </h3>
+      </div>
+
+      <div class="space-y-4">
+
+        <!-- DATE -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+            Sale Date
+          </label>
+
+          <input
+            type="date"
+            formControlName="saleDate"
+            class="w-full rounded-xl border border-[#E5E5E7]
+                   bg-white px-4 py-3 text-sm text-[#1D1D1F]
+                   outline-none transition
+                   focus:border-[#B89E65]
+                   focus:ring-4 focus:ring-[#B89E65]/10"
+          />
+        </div>
+
+        <!-- NOTES -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+            Notes
+          </label>
+
+          <textarea
+            formControlName="notes"
+            rows="3"
+            placeholder="Optional notes"
+            class="w-full resize-none rounded-xl border border-[#E5E5E7]
+                   bg-white px-4 py-3 text-sm text-[#1D1D1F]
+                   outline-none transition
+                   placeholder:text-[#6E6E73]
+                   focus:border-[#B89E65]
+                   focus:ring-4 focus:ring-[#B89E65]/10"
+          ></textarea>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ERROR -->
+    @if (errorMessage) {
+      <div
+        class="flex items-start gap-3 rounded-2xl
+               border border-red-100 bg-red-50 p-4 text-sm text-red-700"
+      >
+        <i class="bi bi-exclamation-circle-fill mt-0.5"></i>
+
+        <span>
+          {{ errorMessage }}
+        </span>
+      </div>
+    }
+
+    <!-- ACTIONS -->
+    <div class="flex justify-end gap-3 border-t border-[#E5E5E7] pt-5">
+
+      <button
+        type="button"
+        (click)="close()"
+        class="rounded-full border border-[#E5E5E7] bg-white
+               px-5 py-2.5 text-sm font-medium text-[#1D1D1F]
+               transition hover:bg-[#F5F5F7]"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="submit"
+        [disabled]="loading"
+        class="rounded-full bg-[#1D1D1F] px-5 py-2.5
+               text-sm font-medium text-white
+               transition hover:bg-[#333336]
+               disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        <span class="flex items-center gap-2">
+
+          @if (loading) {
+            <i class="bi bi-arrow-repeat animate-spin"></i>
+            Saving...
+          } @else {
+            <i class="bi bi-check2"></i>
+            Save Sale
+          }
+
+        </span>
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

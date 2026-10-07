@@ -1,0 +1,244 @@
+
+<div class="w-full bg-white">
+
+  <!-- HEADER -->
+  <div class="flex items-start justify-between border-b border-[#E5E5E7] px-6 py-5">
+
+    <div>
+      <h2 class="text-xl font-semibold tracking-tight text-[#1D1D1F]">
+        Pay Salary
+      </h2>
+
+      <p class="mt-1 text-sm text-[#6E6E73]">
+        {{ staff.fullName }}
+        ·
+        <span class="capitalize">{{ staff.role }}</span>
+        ·
+        ₦{{ staff.salaryAmount | number }}/mo
+      </p>
+    </div>
+
+    <button
+      type="button"
+      (click)="close()"
+      class="flex h-9 w-9 items-center justify-center rounded-full
+             bg-[#F5F5F7] text-[#6E6E73]
+             transition hover:bg-[#E5E5E7] hover:text-[#1D1D1F]"
+      aria-label="Close"
+    >
+      <i class="bi bi-x-lg text-sm"></i>
+    </button>
+
+  </div>
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="save()"
+    class="space-y-7 p-6"
+  >
+
+    <!-- PAYMENT PERIOD -->
+    <div>
+
+      <div class="mb-4">
+        <h3 class="text-sm font-semibold text-[#1D1D1F]">
+          Payment Period
+        </h3>
+
+        <p class="mt-1 text-xs text-[#6E6E73]">
+          Select the month and date this payment is being made.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+
+        <!-- MONTH -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+            Month <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            type="month"
+            formControlName="paymentMonth"
+            class="w-full rounded-xl border border-[#E5E5E7]
+                   bg-white px-4 py-3 text-sm text-[#1D1D1F]
+                   outline-none transition
+                   focus:border-[#B89E65]
+                   focus:ring-4 focus:ring-[#B89E65]/10"
+          />
+        </div>
+
+        <!-- PAYMENT DATE -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+            Payment Date <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            type="date"
+            formControlName="paymentDate"
+            class="w-full rounded-xl border border-[#E5E5E7]
+                   bg-white px-4 py-3 text-sm text-[#1D1D1F]
+                   outline-none transition
+                   focus:border-[#B89E65]
+                   focus:ring-4 focus:ring-[#B89E65]/10"
+          />
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- PAYMENT DETAILS -->
+    <div>
+
+      <div class="mb-4">
+        <h3 class="text-sm font-semibold text-[#1D1D1F]">
+          Payment Details
+        </h3>
+
+        <p class="mt-1 text-xs text-[#6E6E73]">
+          Enter the type and amount of payment.
+        </p>
+      </div>
+
+      <div class="space-y-4">
+
+        <!-- TYPE -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+            Payment Type
+          </label>
+
+          <select
+            formControlName="paymentType"
+            class="w-full rounded-xl border border-[#E5E5E7]
+                   bg-white px-4 py-3 text-sm text-[#1D1D1F]
+                   outline-none transition
+                   focus:border-[#B89E65]
+                   focus:ring-4 focus:ring-[#B89E65]/10"
+          >
+            <option value="salary">Monthly Salary</option>
+            <option value="advance">Advance</option>
+            <option value="bonus">Bonus</option>
+          </select>
+        </div>
+
+        <!-- AMOUNT -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+            Amount <span class="text-red-500">*</span>
+          </label>
+
+          <div class="relative">
+            <span
+              class="pointer-events-none absolute left-4 top-1/2
+                     -translate-y-1/2 text-sm text-[#6E6E73]"
+            >
+              ₦
+            </span>
+
+            <input
+              type="number"
+              formControlName="amount"
+              class="w-full rounded-xl border border-[#E5E5E7]
+                     bg-white py-3 pl-9 pr-4 text-sm text-[#1D1D1F]
+                     outline-none transition
+                     focus:border-[#B89E65]
+                     focus:ring-4 focus:ring-[#B89E65]/10"
+            />
+          </div>
+        </div>
+
+        <!-- NOTE -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+            Note
+          </label>
+
+          <input
+            type="text"
+            formControlName="description"
+            placeholder="September 2026 salary"
+            class="w-full rounded-xl border border-[#E5E5E7]
+                   bg-white px-4 py-3 text-sm text-[#1D1D1F]
+                   outline-none transition
+                   placeholder:text-[#6E6E73]
+                   focus:border-[#B89E65]
+                   focus:ring-4 focus:ring-[#B89E65]/10"
+          />
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- STAFF SUMMARY -->
+    <div class="rounded-2xl border border-[#E5E5E7] bg-[#F5F5F7] p-5">
+
+      <div class="flex items-center justify-between">
+
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+            Staff
+          </p>
+
+          <p class="mt-1 font-semibold text-[#1D1D1F]">
+            {{ staff.fullName }}
+          </p>
+        </div>
+
+        <div class="text-right">
+          <p class="text-xs text-[#6E6E73]">
+            Monthly Salary
+          </p>
+
+          <p class="mt-1 text-lg font-semibold text-[#1D1D1F]">
+            ₦{{ staff.salaryAmount | number }}
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="flex justify-end gap-3 border-t border-[#E5E5E7] pt-5">
+
+      <button
+        type="button"
+        (click)="close()"
+        class="rounded-full border border-[#E5E5E7] bg-white
+               px-5 py-2.5 text-sm font-medium text-[#1D1D1F]
+               transition hover:bg-[#F5F5F7]"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="submit"
+        [disabled]="loading"
+        class="rounded-full bg-[#1D1D1F] px-5 py-2.5
+               text-sm font-medium text-white
+               transition hover:bg-[#333336]
+               disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        <span class="flex items-center gap-2">
+
+          @if (loading) {
+            <i class="bi bi-arrow-repeat animate-spin"></i>
+            Paying...
+          } @else {
+            <i class="bi bi-check2"></i>
+            Confirm Payment
+          }
+
+        </span>
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

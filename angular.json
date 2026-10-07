@@ -35,7 +35,10 @@
                 "output": "assets"
               }
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss"],
+            "styles": [
+              "src/global.scss", 
+              "src/theme/variables.scss",
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css"],
             "scripts": [],
             "browser": "src/main.ts"
           },
@@ -129,7 +132,10 @@
     }
   },
   "cli": {
-    "schematicCollections": ["@ionic/angular-toolkit"]
+    "schematicCollections": [
+      "@ionic/angular-toolkit"
+    ],
+    "analytics": "c5b15334-0096-4a58-b280-87be7178a173"
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {

@@ -1,0 +1,200 @@
+html
+<ion-content>
+
+  <div class="min-h-full bg-[#F5F5F7] p-6">
+    <div class="mx-auto max-w-7xl">
+
+      <!-- HEADER -->
+      <div class="mb-6 flex items-center justify-between">
+
+        <div>
+          <h1 class="text-2xl font-semibold tracking-tight text-[#1D1D1F]">
+            Mineral Sales
+          </h1>
+
+          <p class="mt-1 text-sm text-[#6E6E73]">
+            Sales delivered to Chinese buyers with transport cost.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          (click)="openAddSale()"
+          class="flex h-10 w-10 items-center justify-center
+                 rounded-full bg-[#1D1D1F] text-white
+                 transition hover:bg-[#333336]"
+          aria-label="Record Sale"
+        >
+          <i class="bi bi-plus-lg text-sm"></i>
+        </button>
+
+      </div>
+
+      <!-- SEARCH -->
+      <div class="mb-5">
+        <div class="relative max-w-md">
+
+          <i
+            class="bi bi-search pointer-events-none absolute left-4 top-1/2
+                   -translate-y-1/2 text-[#6E6E73]"
+          ></i>
+
+          <input
+            type="search"
+            [ngModel]="searchTerm()"
+            (ngModelChange)="searchTerm.set($event)"
+            placeholder="Search buyer..."
+            class="h-11 w-full rounded-xl border border-[#E5E5E7]
+                   bg-white pl-11 pr-4 text-sm text-[#1D1D1F]
+                   outline-none transition
+                   placeholder:text-[#6E6E73]
+                   focus:border-[#B89E65]
+                   focus:ring-4 focus:ring-[#B89E65]/10"
+          />
+
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="overflow-hidden rounded-2xl border border-[#E5E5E7] bg-white">
+
+        <div class="overflow-x-auto">
+
+          <table class="w-full text-left text-sm">
+
+            <thead class="border-b border-[#E5E5E7]">
+              <tr>
+
+                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+                  Buyer
+                </th>
+
+                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+                  Location
+                </th>
+
+                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+                  Mineral
+                </th>
+
+                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+                  Qty
+                </th>
+
+                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+                  Unit Price
+                </th>
+
+                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+                  Gross
+                </th>
+
+                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+                  Transport
+                </th>
+
+                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+                  Net
+                </th>
+
+                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
+                  Date
+                </th>
+
+              </tr>
+            </thead>
+
+            <tbody class="divide-y divide-[#E5E5E7]">
+
+              @for (sale of filteredSales(); track sale.id) {
+
+                <tr class="transition hover:bg-[#F5F5F7]">
+
+                  <td class="px-6 py-4 font-medium text-[#1D1D1F]">
+                    {{ sale.buyerName }}
+                  </td>
+
+                  <td class="px-6 py-4 text-[#6E6E73]">
+                    {{ sale.buyerLocation }}
+                  </td>
+
+                  <td class="px-6 py-4 capitalize">
+                    <span
+                      class="inline-flex rounded-full bg-[#F5F5F7]
+                             px-3 py-1 text-xs font-medium text-[#1D1D1F]"
+                    >
+                      {{ sale.mineralType }}
+                    </span>
+                  </td>
+
+                  <td class="px-6 py-4 font-semibold text-[#1D1D1F]">
+                    {{ sale.quantity | number }} kg
+                  </td>
+
+                  <td class="px-6 py-4 text-[#6E6E73]">
+                    ₦{{ sale.unitPrice | number }}
+                  </td>
+
+                  <td class="px-6 py-4 text-[#6E6E73]">
+                    ₦{{ sale.totalAmount | number }}
+                  </td>
+
+                  <td class="px-6 py-4 font-medium text-[#9A7A3A]">
+                    ₦{{ sale.transportationCost | number }}
+                  </td>
+
+                  <td class="px-6 py-4 font-semibold text-[#1D1D1F]">
+                    ₦{{ sale.netAmount | number }}
+                  </td>
+
+                  <td class="px-6 py-4 text-[#6E6E73]">
+                    {{ sale.saleDate | date:'mediumDate' }}
+                  </td>
+
+                </tr>
+
+              }
+
+              @empty {
+
+                <tr>
+                  <td colspan="9" class="px-6 py-16 text-center">
+
+                    <div class="flex flex-col items-center">
+
+                      <div
+                        class="flex h-12 w-12 items-center justify-center
+                               rounded-full bg-[#F5F5F7]"
+                      >
+                        <i class="bi bi-cart-check text-xl text-[#6E6E73]"></i>
+                      </div>
+
+                      <p class="mt-4 text-sm font-medium text-[#1D1D1F]">
+                        No sales found
+                      </p>
+
+                      <p class="mt-1 text-sm text-[#6E6E73]">
+                        Mineral sales will appear here once recorded.
+                      </p>
+
+                    </div>
+
+                  </td>
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</ion-content>
+
+

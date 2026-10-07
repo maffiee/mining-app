@@ -1,0 +1,259 @@
+<ion-content>
+  <div class="min-h-full bg-[#F5F5F7] p-6">
+    <div class="mx-auto max-w-7xl">
+
+  <!-- HEADER -->
+  <div class="mb-6 flex items-center justify-between">
+
+    <div>
+      <h1 class="text-2xl font-semibold tracking-tight text-[#1D1D1F]">
+        Customer Payments
+      </h1>
+
+      <p class="mt-1 text-sm text-[#6E6E73]">
+        Track payments made to customers.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      (click)="openAddPayment()"
+      class="flex h-10 w-10 items-center justify-center
+             rounded-full bg-[#1D1D1F] text-white
+             transition hover:bg-[#333336]"
+      aria-label="Record Payment"
+    >
+      <i class="bi bi-plus-lg text-sm"></i>
+    </button>
+
+  </div>
+
+
+  <!-- SEARCH -->
+  <div class="mb-5">
+
+    <div class="relative max-w-md">
+
+      <i
+        class="bi bi-search pointer-events-none absolute left-4 top-1/2
+               -translate-y-1/2 text-[#6E6E73]"
+      ></i>
+
+      <input
+        type="search"
+        [ngModel]="searchTerm()"
+        (ngModelChange)="searchTerm.set($event)"
+        placeholder="Search customer, method, reference..."
+        class="h-11 w-full rounded-xl border border-[#E5E5E7]
+               bg-white pl-11 pr-4 text-sm text-[#1D1D1F]
+               outline-none transition
+               placeholder:text-[#6E6E73]
+               focus:border-[#B89E65]
+               focus:ring-4 focus:ring-[#B89E65]/10"
+      />
+
+    </div>
+
+  </div>
+
+
+  <!-- TABLE -->
+  <div class="overflow-hidden rounded-2xl border border-[#E5E5E7] bg-white">
+
+    <div class="overflow-x-auto">
+
+      <table class="w-full text-left text-sm">
+
+        <!-- TABLE HEADER -->
+        <thead class="border-b border-[#E5E5E7]">
+
+          <tr>
+
+            <th
+              class="px-6 py-4 text-xs font-medium uppercase
+                     tracking-wide text-[#6E6E73]"
+            >
+              Customer
+            </th>
+
+            <th
+              class="px-6 py-4 text-xs font-medium uppercase
+                     tracking-wide text-[#6E6E73]"
+            >
+              Settlement
+            </th>
+
+            <th
+              class="px-6 py-4 text-xs font-medium uppercase
+                     tracking-wide text-[#6E6E73]"
+            >
+              Amount Paid
+            </th>
+
+            <th
+              class="px-6 py-4 text-xs font-medium uppercase
+                     tracking-wide text-[#6E6E73]"
+            >
+              Method
+            </th>
+
+            <th
+              class="px-6 py-4 text-xs font-medium uppercase
+                     tracking-wide text-[#6E6E73]"
+            >
+              Balance
+            </th>
+
+            <th
+              class="px-6 py-4 text-xs font-medium uppercase
+                     tracking-wide text-[#6E6E73]"
+            >
+              Status
+            </th>
+
+            <th
+              class="px-6 py-4 text-xs font-medium uppercase
+                     tracking-wide text-[#6E6E73]"
+            >
+              Date
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <!-- TABLE BODY -->
+        <tbody class="divide-y divide-[#E5E5E7]">
+
+          @for (payment of filteredPayments(); track payment.id) {
+
+            <tr class="transition hover:bg-[#F5F5F7]">
+
+              <!-- CUSTOMER -->
+              <td class="px-6 py-4 font-medium text-[#1D1D1F]">
+                {{ payment.customerName }}
+              </td>
+
+
+              <!-- SETTLEMENT -->
+              <td class="px-6 py-4 text-[#6E6E73]">
+                ₦{{ payment.settlementAmount | number }}
+              </td>
+
+
+              <!-- AMOUNT PAID -->
+              <td class="px-6 py-4 font-semibold text-[#1D1D1F]">
+                ₦{{ payment.amountPaid | number }}
+              </td>
+
+
+              <!-- METHOD -->
+              <td class="px-6 py-4 text-[#6E6E73] capitalize">
+                {{ payment.paymentMethod }}
+              </td>
+
+
+              <!-- BALANCE -->
+              <td class="px-6 py-4 text-[#6E6E73]">
+                ₦{{ payment.balance | number }}
+              </td>
+
+
+              <!-- STATUS -->
+              <td class="px-6 py-4">
+
+                @if (payment.status === 'paid') {
+
+                  <span
+                    class="inline-flex items-center gap-1.5
+                           rounded-full bg-green-50 px-3 py-1
+                           text-xs font-medium text-green-700"
+                  >
+                    <i class="bi bi-check-circle-fill text-[10px]"></i>
+                    Paid
+                  </span>
+
+                } @else if (payment.status === 'partially-paid') {
+
+                  <span
+                    class="inline-flex items-center gap-1.5
+                           rounded-full bg-orange-50 px-3 py-1
+                           text-xs font-medium text-orange-700"
+                  >
+                    <i class="bi bi-hourglass-split text-[10px]"></i>
+                    Partially Paid
+                  </span>
+
+                } @else {
+
+                  <span
+                    class="inline-flex items-center gap-1.5
+                           rounded-full bg-orange-50 px-3 py-1
+                           text-xs font-medium text-orange-700"
+                  >
+                    <i class="bi bi-clock-fill text-[10px]"></i>
+                    {{ payment.status }}
+                  </span>
+
+                }
+
+              </td>
+
+
+              <!-- DATE -->
+              <td class="px-6 py-4 text-[#6E6E73]">
+                {{ payment.paymentDate | date:'mediumDate' }}
+              </td>
+
+            </tr>
+
+          }
+
+
+          @empty {
+
+            <tr>
+
+              <td
+                colspan="7"
+                class="px-6 py-16 text-center"
+              >
+
+                <div class="flex flex-col items-center">
+
+                  <div
+                    class="flex h-12 w-12 items-center justify-center
+                           rounded-full bg-[#F5F5F7]"
+                  >
+                    <i class="bi bi-cash-stack text-xl text-[#6E6E73]"></i>
+                  </div>
+
+                  <p class="mt-4 text-sm font-medium text-[#1D1D1F]">
+                    No payments found
+                  </p>
+
+                  <p class="mt-1 text-sm text-[#6E6E73]">
+                    Customer payments will appear here once recorded.
+                  </p>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
+
+  </div>
+</ion-content>

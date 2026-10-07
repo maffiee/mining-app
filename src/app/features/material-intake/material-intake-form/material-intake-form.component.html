@@ -1,0 +1,244 @@
+<div class="w-full bg-white">
+
+  <!-- HEADER -->
+
+  <div class="flex items-center justify-between border-b border-[#E5E5E7] px-6 py-5">
+<div>
+
+  <h2 class="text-xl font-semibold tracking-tight text-[#1D1D1F]">
+    New Material Intake
+  </h2>
+
+  <p class="mt-1 text-sm text-[#6E6E73]">
+    Record material received from a customer.
+  </p>
+
+</div>
+
+<button
+  type="button"
+  (click)="close()"
+  class="flex h-9 w-9 items-center justify-center rounded-full
+         text-[#6E6E73] transition
+         hover:bg-[#F5F5F7] hover:text-[#1D1D1F]"
+  aria-label="Close"
+>
+  <i class="bi bi-x-lg text-sm"></i>
+</button>
+
+
+  </div>
+
+  <!-- FORM -->
+
+  <form
+    [formGroup]="materialIntakeForm"
+    (ngSubmit)="save()"
+    class="space-y-6 p-6"
+  >
+
+<!-- Customer -->
+
+<div>
+
+  <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+    Customer
+  </label>
+
+  <select
+    formControlName="customerId"
+    (change)="onCustomerChange()"
+    class="w-full rounded-xl border border-[#E5E5E7] bg-white
+           px-4 py-3 text-sm text-[#1D1D1F] outline-none
+           focus:border-[#B89E65]
+           focus:ring-2 focus:ring-[#B89E65]/10"
+  >
+
+    <option value="">
+      Select a customer
+    </option>
+
+    @for (customer of customerList(); track customer.id) {
+
+      <option [value]="customer.id">
+        {{ customer.name }}
+      </option>
+
+    }
+
+  </select>
+
+</div>
+
+
+<!-- Material -->
+
+<div>
+
+  <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+    Material Type
+  </label>
+
+  <select
+    formControlName="materialType"
+    class="w-full rounded-xl border border-[#E5E5E7] bg-white
+           px-4 py-3 text-sm text-[#1D1D1F] outline-none
+           focus:border-[#B89E65]
+           focus:ring-2 focus:ring-[#B89E65]/10"
+  >
+
+    <option value="Mixed Ore">
+      Raw
+    </option>
+
+  </select>
+
+</div>
+
+
+<!-- Quantity + Unit -->
+
+<div class="grid grid-cols-2 gap-4">
+
+  <div>
+
+    <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+      Quantity
+    </label>
+
+    <input
+      type="number"
+      formControlName="quantity"
+      min="1"
+      class="w-full rounded-xl border border-[#E5E5E7]
+             bg-white px-4 py-3 text-sm text-[#1D1D1F]
+             outline-none
+             focus:border-[#B89E65]
+             focus:ring-2 focus:ring-[#B89E65]/10"
+    >
+
+  </div>
+
+
+  <div>
+
+    <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+      Unit
+    </label>
+
+    <select
+      formControlName="unit"
+      class="w-full rounded-xl border border-[#E5E5E7] bg-white
+             px-4 py-3 text-sm text-[#1D1D1F] outline-none
+             focus:border-[#B89E65]
+             focus:ring-2 focus:ring-[#B89E65]/10"
+    >
+
+      <option value="bags">
+        Bags
+      </option>
+
+      <option value="kg">
+        Kilograms
+      </option>
+
+      <option value="tons">
+        Tons
+      </option>
+
+    </select>
+
+  </div>
+
+</div>
+
+
+<!-- Date -->
+
+<div>
+
+  <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+    Date
+  </label>
+
+  <input
+    type="date"
+    formControlName="date"
+    class="w-full rounded-xl border border-[#E5E5E7]
+           bg-white px-4 py-3 text-sm text-[#1D1D1F]
+           outline-none
+           focus:border-[#B89E65]
+           focus:ring-2 focus:ring-[#B89E65]/10"
+  >
+
+</div>
+
+
+<!-- Notes -->
+
+<div>
+
+  <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
+    Notes
+  </label>
+
+  <textarea
+    formControlName="notes"
+    rows="3"
+    placeholder="Optional notes..."
+    class="w-full resize-none rounded-xl border border-[#E5E5E7]
+           bg-white px-4 py-3 text-sm text-[#1D1D1F]
+           outline-none placeholder:text-[#6E6E73]
+           focus:border-[#B89E65]
+           focus:ring-2 focus:ring-[#B89E65]/10"
+  ></textarea>
+
+</div>
+
+
+<!-- ERROR -->
+
+@if (errorMessage) {
+
+  <div
+    class="rounded-xl bg-red-50 px-4 py-3
+           text-sm text-red-700"
+  >
+    {{ errorMessage }}
+  </div>
+
+}
+
+
+<!-- ACTIONS -->
+
+<div class="flex justify-end gap-3 border-t border-[#E5E5E7] pt-5">
+
+  <button
+    type="button"
+    (click)="close()"
+    class="rounded-full border border-[#E5E5E7]
+           bg-white px-5 py-2.5 text-sm font-medium
+           text-[#1D1D1F] transition
+           hover:bg-[#F5F5F7]"
+  >
+    Cancel
+  </button>
+
+  <button
+    type="submit"
+    [disabled]="loading"
+    class="rounded-full bg-[#1D1D1F] px-5 py-2.5
+           text-sm font-medium text-white transition
+           hover:bg-[#333336] disabled:cursor-not-allowed
+           disabled:opacity-50"
+  >
+    {{ loading ? 'Saving...' : 'Save Intake' }}
+  </button>
+
+</div>
+
+
+  </form>
+
+</div>
