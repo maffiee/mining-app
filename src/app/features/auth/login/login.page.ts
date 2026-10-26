@@ -1,16 +1,15 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonContent } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { Router } from '@angular/router';
-
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar,  ReactiveFormsModule]
+  imports: [IonContent, ReactiveFormsModule, RouterLink],
 })
 export class LoginPage  {
 

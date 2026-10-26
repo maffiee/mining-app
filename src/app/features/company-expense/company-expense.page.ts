@@ -32,10 +32,24 @@ export class CompanyExpensePage {
     alert('Expenses recalculated: Transport + Customer Payments');
   }
 
-   openAddExpense() {
+  openAddExpense() {
     const ref = this.dialog.open(CompanyExpenseFormComponent, { width: '480px' });
     ref.afterClosed().subscribe(done => {
-      if (done) { /* list auto updates via firestore */ }
+      if (done) { /* list auto updates */ }
     });
+  }
+
+  // NEW: Edit
+  openEditExpense(expense: any) {
+    const ref = this.dialog.open(CompanyExpenseFormComponent, { 
+      width: '480px',
+      data: expense // pass existing data to form
+    });
+  }
+
+  // NEW: Delete
+  async deleteExpense(expense: any) {
+    if (!confirm(`Delete expense ₦${expense.amount} for ${expense.category}?`)) return;
+    await this.service.delete(expense.id);
   }
 }

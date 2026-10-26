@@ -1,167 +1,84 @@
-
 <ion-content>
-  <div class="min-h-full bg-[#F5F5F7] p-6">
+  <div class="min-h-full bg-[#F5F5F7] p-4 sm:p-6">
     <div class="mx-auto max-w-7xl">
 
       <!-- HEADER -->
       <div class="mb-6">
-        <h1 class="text-2xl font-semibold tracking-tight text-[#1D1D1F]">
-          Staff Payments
-        </h1>
-
-        <p class="mt-1 text-sm text-[#6E6E73]">
-          Salary history. Payments are recorded as Labor expenses.
-        </p>
+        <h1 class="text-xl sm:text-2xl font-semibold tracking-tight text-[#1D1D1F]">Staff Payments</h1>
+        <p class="mt-1 text- sm:text-sm text-[#6E6E73]">Salary history. Payments recorded as Labor expenses.</p>
       </div>
 
-      <!-- FILTER + SUMMARY -->
-      <div class="mb-6 flex flex-col gap-4 md:flex-row md:items-end">
-
+      <!-- FILTER + SUMMARY - STACK ON MOBILE -->
+      <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end">
         <!-- MONTH FILTER -->
-        <div class="w-full md:max-w-xs">
-          <label class="mb-2 block text-sm font-medium text-[#1D1D1F]">
-            Filter by Month
-          </label>
-
-          <input
-            type="month"
-            [ngModel]="searchMonth()"
-            (ngModelChange)="searchMonth.set($event)"
-            class="h-11 w-full rounded-xl border border-[#E5E5E7]
-                   bg-white px-4 text-sm text-[#1D1D1F]
-                   outline-none transition
-                   focus:border-[#B89E65]
-                   focus:ring-4 focus:ring-[#B89E65]/10"
-          />
+        <div class="w-full sm:max-w-xs">
+          <label class="mb-2 block text- font-semibold uppercase tracking-wide text-[#6E6E73]">Filter by Month</label>
+          <div class="relative">
+            <input type="month" [ngModel]="searchMonth()" (ngModelChange)="searchMonth.set($event)" class="h-11 w-full appearance-none rounded-xl border border-[#E5E5E7] bg-white px-4 pr-10 text- sm:text-sm text-[#1D1D1F] outline-none focus:border-[#1D1D1F] focus:ring-2 focus:ring-[#1D1D1F]/10 [&::-webkit-calendar-picker-indicator]:opacity-100 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:w-5 [&::-webkit-calendar-picker-indicator]:h-5" />
+            <i class="bi bi-calendar3 pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#1D1D1F]"></i>
+          </div>
         </div>
 
         <!-- TOTAL -->
-        <div
-          class="rounded-2xl border border-[#E5E5E7]
-                 bg-white px-5 py-3"
-        >
-          <p class="text-xs text-[#6E6E73]">
-            Total for {{ searchMonth() }}
-          </p>
-
-          <p class="mt-1 text-xl font-semibold tracking-tight text-[#1D1D1F]">
-            ₦{{ totalForMonth() | number }}
-          </p>
+        <div class="rounded-2xl border border-[#E5E5E7] bg-white px-5 py-3 flex-1 sm:flex-none">
+          <p class="text- text-[#6E6E73]">Total for {{ searchMonth() }}</p>
+          <p class="mt-1 text- sm:text-xl font-semibold tracking-tight text-[#1D1D1F]">₦{{ totalForMonth() | number }}</p>
         </div>
-
       </div>
 
-      <!-- TABLE -->
-      <div class="overflow-hidden rounded-2xl border border-[#E5E5E7] bg-white">
-
+      <!-- DESKTOP TABLE -->
+      <div class="hidden sm:block overflow-hidden rounded-2xl border border-[#E5E5E7] bg-white">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-sm">
-
-            <thead class="border-b border-[#E5E5E7]">
+            <thead class="border-b border-[#E5E5E7] bg-[#F5F5F7]/50">
               <tr>
-                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
-                  Staff
-                </th>
-
-                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
-                  Month
-                </th>
-
-                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
-                  Type
-                </th>
-
-                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
-                  Amount
-                </th>
-
-                <th class="px-6 py-4 text-xs font-medium uppercase tracking-wide text-[#6E6E73]">
-                  Date Paid
-                </th>
+                <th class="px-6 py-3.5 text- font-semibold uppercase tracking-wide text-[#6E6E73]">Staff</th>
+                <th class="px-6 py-3.5 text- font-semibold uppercase tracking-wide text-[#6E6E73]">Month</th>
+                <th class="px-6 py-3.5 text- font-semibold uppercase tracking-wide text-[#6E6E73]">Type</th>
+                <th class="px-6 py-3.5 text- font-semibold uppercase tracking-wide text-[#6E6E73]">Amount</th>
+                <th class="px-6 py-3.5 text- font-semibold uppercase tracking-wide text-[#6E6E73]">Date Paid</th>
               </tr>
             </thead>
-
             <tbody class="divide-y divide-[#E5E5E7]">
-
               @for (p of filtered(); track p.id) {
-
-                <tr class="transition hover:bg-[#F5F5F7]">
-
-                  <!-- STAFF -->
-                  <td class="px-6 py-4">
-                    <p class="font-medium text-[#1D1D1F]">
-                      {{ p.staffName }}
-                    </p>
-
-                    <p class="mt-1 text-xs capitalize text-[#6E6E73]">
-                      {{ p.role }}
-                    </p>
-                  </td>
-
-                  <!-- MONTH -->
-                  <td class="px-6 py-4 text-[#6E6E73]">
-                    {{ p.paymentMonth }}
-                  </td>
-
-                  <!-- TYPE -->
-                  <td class="px-6 py-4">
-                    <span
-                      class="inline-flex items-center rounded-full
-                             bg-[#F5F5F7] px-3 py-1
-                             text-xs font-medium capitalize text-[#6E6E73]"
-                    >
-                      {{ p.paymentType }}
-                    </span>
-                  </td>
-
-                  <!-- AMOUNT -->
-                  <td class="px-6 py-4 font-semibold text-[#1D1D1F]">
-                    ₦{{ p.amount | number }}
-                  </td>
-
-                  <!-- DATE -->
-                  <td class="px-6 py-4 text-[#6E6E73]">
-                    {{ p.paymentDate | date:'mediumDate' }}
-                  </td>
-
+                <tr class="hover:bg-[#F5F5F7]">
+                  <td class="px-6 py-4"><p class="font-medium">{{ p.staffName }}</p><p class="mt-1 text-xs capitalize text-[#6E6E73]">{{ p.role }}</p></td>
+                  <td class="px-6 py-4 text-[#6E6E73]">{{ p.paymentMonth }}</td>
+                  <td class="px-6 py-4"><span class="inline-flex rounded-full bg-[#F5F5F7] px-3 py-1 text-xs capitalize">{{ p.paymentType }}</span></td>
+                  <td class="px-6 py-4 font-semibold">₦{{ p.amount | number }}</td>
+                  <td class="px-6 py-4 text-[#6E6E73]">{{ p.paymentDate | date:'mediumDate' }}</td>
                 </tr>
-
               }
-
-              @empty {
-
-                <tr>
-                  <td colspan="5" class="px-6 py-16 text-center">
-
-                    <div class="flex flex-col items-center">
-
-                      <div
-                        class="flex h-12 w-12 items-center justify-center
-                               rounded-full bg-[#F5F5F7]"
-                      >
-                        <i class="bi bi-person-check text-xl text-[#6E6E73]"></i>
-                      </div>
-
-                      <p class="mt-4 text-sm font-medium text-[#1D1D1F]">
-                        No payments found
-                      </p>
-
-                      <p class="mt-1 text-sm text-[#6E6E73]">
-                        No staff payments for {{ searchMonth() }}.
-                      </p>
-
-                    </div>
-
-                  </td>
-                </tr>
-
-              }
-
             </tbody>
-
           </table>
         </div>
+      </div>
 
+      <!-- MOBILE CARDS -->
+      <div class="sm:hidden space-y-2.5">
+        @for (p of filtered(); track p.id) {
+          <div class="rounded-2xl border border-[#E5E5E7] bg-white p-4">
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0 flex-1">
+                <p class="text- font-semibold text-[#1D1D1F] truncate">{{ p.staffName }}</p>
+                <p class="mt-0.5 text- text-[#6E6E73] capitalize">{{ p.role }} • {{ p.paymentMonth }}</p>
+                <div class="mt-2 flex items-center justify-between">
+                  <span class="inline-flex rounded-full bg-[#F5F5F7] px-2.5 py-1 text- capitalize">{{ p.paymentType }}</span>
+                  <span class="text- text-[#6E6E73]">{{ p.paymentDate | date:'mediumDate' }}</span>
+                </div>
+              </div>
+              <div class="shrink-0 text-right">
+                <p class="text- font-bold text-[#1D1D1F]">₦{{ p.amount | number }}</p>
+              </div>
+            </div>
+          </div>
+        } @empty {
+          <div class="rounded-2xl border bg-white py-12 text-center">
+            <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#F5F5F7]"><i class="bi bi-person-check text-xl text-[#6E6E73]"></i></div>
+            <p class="mt-3 text- font-medium">No payments found</p>
+            <p class="mt-1 text- text-[#6E6E73]">No staff payments for {{ searchMonth() }}.</p>
+          </div>
+        }
       </div>
 
     </div>

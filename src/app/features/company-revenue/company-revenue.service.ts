@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Firestore, collection, collectionData, addDoc, doc, serverTimestamp, deleteDoc, getDocs } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AuditLogService } from 'src/app/core/services/audit-log.service';
 
 export interface CompanyRevenue {
   id?: string;
@@ -21,6 +22,7 @@ export class CompanyRevenueService {
   private readonly firestore = inject(Firestore);
   private readonly col = collection(this.firestore, 'companyRevenue');
   private readonly salesCol = collection(this.firestore, 'mineralSales');
+  private readonly auditLogService = inject(AuditLogService);
 
   getAll(): Observable<CompanyRevenue[]> {
     return collectionData(this.col, { idField: 'id' }) as Observable<CompanyRevenue[]>;
@@ -45,7 +47,7 @@ export class CompanyRevenueService {
     // 2. Recreate from all sales
     for (const s of salesSnap.docs) {
       const sale: any = s.data();
-      await addDoc(this.col, {
+     const docRef = await addDoc(this.col, {
         source: 'mineral_sale',
         sourceId: s.id,
         buyerName: sale.buyerName,
@@ -55,6 +57,12 @@ export class CompanyRevenueService {
         totalAmount: sale.totalAmount,
         revenueDate: sale.saleDate,
         createdAt: serverTimestamp(),
+      });
+      await this.auditLogService.log({
+        action: 'CREATE',
+        collection: 'companyRevenue',
+        recordId: docRef.id,
+        description: `Revenue ₦${sale.totalAmount} - ${sale.buyerName}`,
       });
     }
   }

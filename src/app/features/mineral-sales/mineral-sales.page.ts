@@ -29,4 +29,12 @@ export class MineralSalesPage {
   openAddSale(): void {
     this.dialog.open(MineralSaleFormComponent, { width: '650px', maxWidth: '95vw' });
   }
+
+  editSale(sale: any): void {
+    this.dialog.open(MineralSaleFormComponent, {
+      width: '650px',
+      maxWidth: '95vw',
+      data: sale,
+    });
+  }
 }

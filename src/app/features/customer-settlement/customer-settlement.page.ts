@@ -32,10 +32,14 @@ export class CustomerSettlementPage {
 
   readonly searchTerm = signal('');
 
-  // Set of paid settlement IDs - prevents double pay
-  readonly paidSettlementIds = computed(
-    () => new Set(this.payments().map((p: any) => p.settlementId))
-  );
+  // Only fully paid settlements should be treated as paid.
+  readonly paidSettlementIds = computed(() => {
+    const paidIds = this.settlements()
+      .filter((settlement: any) => this.isSettlementFullyPaid(settlement))
+      .map((settlement: any) => settlement.id);
+
+    return new Set(paidIds);
+  });
 
   // Filtered by search
   readonly filteredSettlements = computed(() => {
@@ -46,8 +50,17 @@ export class CustomerSettlementPage {
     );
   });
 
+  isSettlementFullyPaid(settlement: any): boolean {
+    if (!settlement) {
+      return false;
+    }
+
+    return settlement.status === 'paid' || Number(settlement.balance ?? 0) <= 0;
+  }
+
   isSettlementPaid(settlementId: string): boolean {
-    return this.paidSettlementIds().has(settlementId);
+    const settlement = this.settlements().find((item: any) => item.id === settlementId);
+    return settlement ? this.isSettlementFullyPaid(settlement) : false;
   }
 
   openAddSettlement(): void {

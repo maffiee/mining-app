@@ -1,22 +1,19 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MineralSaleFormComponent } from './mineral-sales-form.component';
 
-import { MineralSalesFormComponent } from './mineral-sales-form.component';
+describe('MineralSaleFormComponent', () => {
+  let component: MineralSaleFormComponent;
+  let fixture: ComponentFixture<MineralSaleFormComponent>;
 
-describe('MineralSalesFormComponent', () => {
-  let component: MineralSalesFormComponent;
-  let fixture: ComponentFixture<MineralSalesFormComponent>;
-
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ MineralSalesFormComponent ],
-      imports: [IonicModule.forRoot()]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [MineralSaleFormComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MineralSalesFormComponent);
+    fixture = TestBed.createComponent(MineralSaleFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { ownerGuard } from './features/auth/owner.guard';
 
 export const routes: Routes = [
   {
@@ -15,6 +16,11 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () => import('./features/auth/login/login.page').then( m => m.LoginPage),
   },
+   {
+    path: 'signup',
+    loadComponent: () => import('./features/auth/signup/signup.page').then( m => m.SignupPage)
+  },
+  
 
   {
     path: 'app',
@@ -35,7 +41,7 @@ export const routes: Routes = [
         },
         {
           path: 'customers',
-          loadComponent: () => import('./features/customers/customers.page').then(m => m.CustomersPage),
+          loadComponent: () => import('./features/customers/customers.page').then(m => m.CustomersPage), 
         },
         {
           path: 'customer-details',
@@ -61,10 +67,6 @@ export const routes: Routes = [
           path: 'mineral-inventory',
           loadComponent: () => import('./features/mineral-inventory/mineral-inventory.page').then( m => m.MineralInventoryPage)
         },
-         {
-          path: 'mineral-inventory',
-          loadComponent: () => import('./features/mineral-inventory/mineral-inventory.page').then( m => m.MineralInventoryPage)
-        },
         {
           path: 'mineral-sales',
           loadComponent: () => import('./features/mineral-sales/mineral-sales.page').then( m => m.MineralSalesPage)
@@ -83,11 +85,25 @@ export const routes: Routes = [
         },
         {
     path: 'staff',
-    loadComponent: () => import('./features/staff/staff.page').then( m => m.StaffPage)
+    loadComponent: () => import('./features/staff/staff.page').then( m => m.StaffPage), canActivate: [ownerGuard]
   },
   {
     path: 'staff-payment',
-    loadComponent: () => import('./features/staff-payment/staff-payment.page').then( m => m.StaffPaymentPage)
+    loadComponent: () => import('./features/staff-payment/staff-payment.page').then( m => m.StaffPaymentPage),canActivate: [ownerGuard]
+  },
+  {
+    path: 'daily-report',
+    loadComponent: () => import('./features/daily-report/daily-report.page').then( m => m.DailyReportPage), canActivate: [ownerGuard]
+  },
+  {
+    path: 'buyer-ledger',
+    loadComponent: () => import('./features/buyer-ledger/buyer-ledger.page').then( m => m.BuyerLedgerPage)
+  },
+
+  { path: 'signup', loadComponent: () => import('./features/auth/signup/signup.page').then(m => m.SignupPage) },
+  {
+    path: 'mineral-list',
+    loadComponent: () => import('./features/mineral-list/mineral-list.page').then( m => m.MineralListPage)
   },
 
 
@@ -95,6 +111,9 @@ export const routes: Routes = [
   
 ],
   },
+  
+  
+ 
   
   
   
