@@ -25,15 +25,12 @@ export class MineralFormComponent implements OnInit {
     this.isEditMode = !!this.data?.mineral;
     this.form = this.fb.group({
       name: [this.data?.mineral?.name || '', [Validators.required, Validators.minLength(2)]],
-      price: [this.data?.mineral?.price ?? null, [Validators.required, Validators.min(0)]]
+      isActive: [this.data?.mineral?.isActive ?? true]
     });
   }
 
   async save() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
+    if (this.form.invalid) { this.form.markAllAsTouched(); return; }
     this.loading = true;
     this.errorMessage = '';
     try {
@@ -48,8 +45,5 @@ export class MineralFormComponent implements OnInit {
     }
     this.loading = false;
   }
-
-  close() {
-    this.dialogRef.close();
-  }
+  close() { this.dialogRef.close(); }
 }

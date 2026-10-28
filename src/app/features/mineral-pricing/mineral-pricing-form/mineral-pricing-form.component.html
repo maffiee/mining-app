@@ -1,0 +1,48 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+  <div class="absolute inset-0" (click)="close()"></div>
+  <div class="relative w-full max-w-lg bg-white rounded-xl overflow-hidden shadow-2xl border">
+    <div class="flex items-center justify-between border-b px-4 py-3">
+      <h2 class="text-sm font-semibold">{{ isEdit ? 'Edit Pricing' : 'Set Mineral Price' }}</h2>
+      <button type="button" (click)="close()" class="h-7 w-7 rounded-full bg-[#F5F5F7]"><i class="bi bi-x-lg text-xs"></i></button>
+    </div>
+
+    @if(loadingData){
+      <div class="p-10 text-center text-sm">Loading...</div>
+    } @else {
+      <form [formGroup]="form" (ngSubmit)="save()" class="p-4 space-y-4 bg-white">
+        <div>
+          <label class="text-xs font-medium">Mineral *</label>
+          <select formControlName="mineralId" class="mt-1 w-full rounded-lg border px-3 py-2.5 text-sm">
+            <option value="">Select mineral</option>
+            @for(m of minerals; track m.id){ <option [value]="m.id">{{m.name}}</option> }
+          </select>
+        </div>
+        <div>
+          <label class="text-xs font-medium">Location *</label>
+          <select formControlName="locationId" class="mt-1 w-full rounded-lg border px-3 py-2.5 text-sm">
+            <option value="">Select location</option>
+            @for(l of locations; track l.id){ <option [value]="l.id">{{l.name}}</option> }
+          </select>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="text-xs font-medium">Low ₦ *</label>
+            <input type="number" formControlName="lowPrice" class="mt-1 w-full rounded-lg border px-3 py-2.5 text-sm" placeholder="4800" />
+          </div>
+          <div>
+            <label class="text-xs font-medium">Medium ₦ *</label>
+            <input type="number" formControlName="mediumPrice" class="mt-1 w-full rounded-lg border px-3 py-2.5 text-sm bg-yellow-50 font-semibold" placeholder="5000" />
+          </div>
+          <div>
+            <label class="text-xs font-medium">High ₦ *</label>
+            <input type="number" formControlName="highPrice" class="mt-1 w-full rounded-lg border px-3 py-2.5 text-sm" placeholder="5300" />
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t">
+          <button type="button" (click)="close()" class="rounded-full border px-4 py-2 text-xs">Cancel</button>
+          <button type="submit" class="rounded-full bg-black text-white px-5 py-2 text-xs">{{ loading ? 'Saving...' : isEdit ? 'Update' : 'Save Price' }}</button>
+        </div>
+      </form>
+    }
+  </div>
+</div>

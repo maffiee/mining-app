@@ -109,6 +109,16 @@ export class SidebarComponent {
     label: 'Mineral List',
     icon: 'bi bi-list-ul',
     route: '/app/mineral-list',
+  },
+  {
+    label: 'Location',
+    icon: 'bi bi-geo-alt-fill',
+    route: '/app/location',
+  },
+  {
+    label: 'Mineral Pricing',
+    icon: 'bi bi-cash-stack',
+    route: '/app/mineral-pricing',
   }
   
 

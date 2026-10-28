@@ -53,11 +53,8 @@ export class MineralListPage implements OnInit {
       width: '450px',
       data: null
     });
-
     dialogRef.afterClosed().subscribe((result) => {
-      if (result?.reload) {
-        this.getAll();
-      }
+      if (result?.reload) this.getAll();
     });
   }
 
@@ -66,12 +63,19 @@ export class MineralListPage implements OnInit {
       width: '450px',
       data: { mineral }
     });
-
     dialogRef.afterClosed().subscribe((result) => {
-      if (result?.reload) {
-        this.getAll();
-      }
+      if (result?.reload) this.getAll();
     });
+  }
+
+  async toggleActive(mineral: Minerals) {
+    try {
+      const newStatus = !(mineral.isActive !== false);
+      await this.service.toggleActive(mineral.id!, newStatus);
+      await this.getAll();
+    } catch (e: any) {
+      alert(e.message);
+    }
   }
 
   async deleteMineral(id: string) {

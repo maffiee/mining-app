@@ -105,6 +105,15 @@ export const routes: Routes = [
     path: 'mineral-list',
     loadComponent: () => import('./features/mineral-list/mineral-list.page').then( m => m.MineralListPage)
   },
+   {
+    path: 'location',
+    loadComponent: () => import('./features/location/location.page').then( m => m.LocationPage)
+  },
+  {
+    path: 'mineral-pricing',
+    loadComponent: () => import('./features/mineral-pricing/mineral-pricing.page').then( m => m.MineralPricingPage)
+  },
+  
 
 
 
@@ -112,6 +121,7 @@ export const routes: Routes = [
 ],
   },
   
+ 
   
  
   

@@ -1,0 +1,26 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+  <div class="absolute inset-0" (click)="close()"></div>
+  <div class="relative w-full max-w-md bg-white rounded-xl flex flex-col overflow-hidden shadow-2xl border border-[#E5E5E7]">
+    <div class="flex items-center justify-between border-b border-[#E5E5E7] px-4 py-3 bg-white">
+      <div>
+        <h2 class="text-sm font-semibold text-[#1D1D1F]">{{ isEditMode ? 'Edit Location' : 'Add Location' }}</h2>
+        <p class="text-xs text-[#6E6E73]">{{ isEditMode ? 'Update location name' : 'Enter location name' }}</p>
+      </div>
+      <button type="button" (click)="close()" class="flex h-7 w-7 items-center justify-center rounded-full bg-[#F5F5F7]"><i class="bi bi-x-lg text-xs"></i></button>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="save()" class="bg-white">
+      <div class="space-y-4 p-4">
+        <div>
+          <label class="mb-1.5 block text-xs font-medium text-[#1D1D1F]">Location Name</label>
+          <input type="text" formControlName="name" placeholder="e.g. Jos Tin Shed" class="w-full rounded-lg border border-[#E5E5E7] bg-white px-3 py-2.5 text-sm outline-none focus:border-[#B89E65]" />
+        </div>
+        <label class="flex items-center gap-2 text-sm"><input type="checkbox" formControlName="isActive" class="rounded" /> Active</label>
+        @if (errorMessage) {<div class="rounded-lg bg-red-50 px-3 py-2 text-xs text-red-700">{{ errorMessage }}</div>}
+      </div>
+      <div class="flex justify-end gap-2 border-t border-[#E5E5E7] p-3 bg-white">
+        <button type="button" (click)="close()" class="rounded-full border border-[#E5E5E7] bg-white px-4 py-2 text-xs font-medium">Cancel</button>
+        <button type="submit" [disabled]="loading" class="rounded-full bg-[#1D1D1F] px-5 py-2 text-xs font-medium text-white disabled:opacity-50">{{ loading ? 'Saving...' : isEditMode ? 'Update' : 'Save' }}</button>
+      </div>
+    </form>
+  </div>
+</div>
